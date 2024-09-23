@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <title>Weather App</title>
+</head>
+<body>
+    <div class="container">
+        <h1>weather application</h1>
+        <form method="POST" id="cityForm">
+            <input type="text" name="city" placeholder="enter city name" required>
+            <button type="submit">show me the weather</button>
+        </form>
+
+        <!-- Divider below the form -->
+        <hr class="divider">
+
+        {% if geocoding_results %}
+            <h3>Select your city:</h3>
+            <form id="selectCityForm" onsubmit="return false;"> <!-- Prevent default form submission -->
+                <select name="lat_lon" id="lat_lon_select" onchange="splitLatLon()">
+                    <option value="">Select a city</option>
+                    {% for city in geocoding_results %}
+                        <option value="{{ city.lat }},{{ city.lon }}">
+                            {{ city.name }}, {{ city.state or '' }}, {{ city.country }}
+                        </option>
+                    {% endfor %}
+                </select>
+                
+                <!-- Hidden inputs to store separated lat and lon -->
+                <input type="hidden" name="lat" id="lat_input">
+                <input type="hidden" name="lon" id="lon_input">
+                <input type="hidden" name="unit" value="{{ unit }}">
+
+                <button type="button" onclick="getWeather()">Get Weather</button> <!-- Trigger AJAX on click -->
+            </form>
+        {% endif %}
+
+        <div id="weatherContainer"></div> <!-- Container to display weather data -->
+
+        <script>
+            // Split lat_lon into lat and lon
+            function splitLatLon() {
+                const select = document.getElementById('lat_lon_select');
+                const latLonValue = select.value;
+                const [lat, lon] = latLonValue.split(",");  // Split the lat_lon string
+
+                // Set the hidden input fields with the separated values
+                document.getElementById('lat_input').value = lat;
+                document.getElementById('lon_input').value = lon;
+            }
+
+            // Fetch weather dynamically via AJAX
+            function getWeather() {
+                const lat = document.getElementById('lat_input').value;
+                const lon = document.getElementById('lon_input').value;
+                const unit = document.querySelector('input[name="unit"]').value;
+
+                const xhr = new XMLHttpRequest();
+                xhr.open("POST", "/fetch_weather", true);
+                xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+
+                xhr.onreadystatechange = function () {
+                    if (xhr.readyState === 4 && xhr.status === 200) {
+                        const response = JSON.parse(xhr.responseText);
+
+                        // Dynamically update the weather data in the page
+                        const weatherContainer = document.getElementById('weatherContainer');
+                        weatherContainer.innerHTML = `
+                            <h2>In ${response.weather_data.name} the weather is...</h2>
+                            <p>Temperature: ${response.weather_data.main.temp} ${response.weather_data.units}</p>
+                            <p>Condition: ${response.weather_data.weather[0].description}</p>
+                            <p>Local Time: ${response.weather_data.local_time}</p>
+                        `;
+                    }
+                };
+
+                // Send the lat, lon, and unit via POST request
+                xhr.send(`lat=${lat}&lon=${lon}&unit=${unit}`);
+            }
+        </script>
+    </div>
+</body>
+</html>

@@ -1,0 +1,114 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #e5f0ee;
+    margin: 0;
+    padding: 20px;
+}
+
+.container {
+    max-width: 650px;
+    margin: auto;
+    background: white;
+    padding: 20px;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+h1 {
+    text-align: center;
+}
+
+form {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 20px;
+}
+
+input {
+    padding: 10px;
+    margin-right: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+button {
+    padding: 10px;
+    background-color: #28a745;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #218838;
+}
+
+/* Divider styles */
+hr.divider {
+    border: 0;
+    height: 1px;
+    background: #ddd;
+    margin-bottom: 30px;
+}
+
+/* Flex container for aligning temperature and toggle button */
+.weather-info {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 10px;
+}
+
+#toggle-button {
+    background-color: #007bff;
+    margin-left: 15px;
+}
+
+#toggle-button:hover {
+    background-color: #0056b3;
+}
+
+/* Spinner styles */
+#spinner {
+    display: none;
+    border: 4px solid #f3f3f3;
+    border-radius: 50%;
+    border-top: 4px solid #3498db;
+    width: 20px;
+    height: 20px;
+    animation: spin 1s linear infinite;
+    margin-left: 10px;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* --- Mobile Responsiveness --- */
+@media (max-width: 768px) {
+    .weather-info {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    #toggle-button {
+        margin-left: 0;
+        margin-top: 15px;
+    }
+
+    #spinner {
+        margin-left: 0;
+        margin-top: 10px;
+    }
+
+    form {
+        flex-direction: column;
+    }
+
+    input {
+        margin-bottom: 10px;
+        width: 100%;
+    }
+}
