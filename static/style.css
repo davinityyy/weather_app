@@ -44,6 +44,18 @@ button:hover {
     background-color: #218838;
 }
 
+/* Notice div styling */
+#notice {
+    background-color: #fff0f0;  /* Light red background */
+    color: #64008b;  /* Dark red text color */
+    padding: 10px;
+    border: 1px dashed #c93131;
+    border-radius: 5px;
+    margin-top: 50px;
+    text-align: center;
+    font-size: 14px;
+}
+
 /* Divider styles */
 hr.divider {
     border: 0;
@@ -111,4 +123,15 @@ hr.divider {
         margin-bottom: 10px;
         width: 100%;
     }
+}
+
+/* Apply consistent styles for both input and select in selectCityForm */
+#selectCityForm input,
+#selectCityForm select {
+    padding: 10px;
+    margin-right: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    width: 100%; /* Ensure consistent width */
+    max-width: 60%;
 }
